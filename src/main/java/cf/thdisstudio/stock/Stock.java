@@ -140,7 +140,9 @@ public final class Stock extends JavaPlugin implements Listener {
                         ItemMeta stkm = stk.getItemMeta();
                         NamespacedKey key = new NamespacedKey(this, "thdisstudio");
                         stkm.setDisplayName("스디스 스튜디오 주식");
+
                         stkm.setLore(Arrays.asList("구입한 가격: ",String.valueOf(p1.thdisstudio),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.formattedDate));
+
 //                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.thdisstudio),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.myFormatObj.toString()));
                         stkm.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                         stk.setItemMeta(stkm);
@@ -159,6 +161,7 @@ public final class Stock extends JavaPlugin implements Listener {
                         NamespacedKey key = new NamespacedKey(this, "yalmefarm");
                         stkm.setDisplayName("열매 농장 주식");
                         stkm.setLore(Arrays.asList("구입한 가격: ",String.valueOf(p1.yalmefarm),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.formattedDate));
+
 //                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.yalmefarm),"구입한 날짜:", formattedDate, "마지막 가격변동 날짜:", p1.myFormatObj.toString()));
                         stkm.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                         stk.setItemMeta(stkm);
