@@ -108,7 +108,7 @@ public final class Stock extends JavaPlugin implements Listener {
             ItemMeta ym = thdis.getItemMeta();
             ym.setDisplayName("열매 농장");
             ym.setLore(Arrays.asList("가격:", String.valueOf(p1.yalmefarm),"변동 일:", p1.formattedDate, "좌클릭으로 구매, 우클릭으로 판매 하세요!"));
-            ys.setItemMeta(thdism);
+            ys.setItemMeta(ym);
             inv.setItem(11, ys);
 
             /*스디스 스튜디오 주식*/
@@ -148,6 +148,7 @@ public final class Stock extends JavaPlugin implements Listener {
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
                         econ.withdrawPlayer(e.getWhoClicked().getName(), p1.thdisstudio);
+                        e.getWhoClicked().closeInventory();
                     }else{
                         e.getWhoClicked().sendMessage("스디스 스튜디오 주식을 살 돈이 없습니다");
                     }
@@ -167,6 +168,7 @@ public final class Stock extends JavaPlugin implements Listener {
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
                         econ.withdrawPlayer(e.getWhoClicked().getName(), Double.valueOf(p1.yalmefarm));
+                        e.getWhoClicked().closeInventory();
                     }else{
                         e.getWhoClicked().sendMessage("열매 농장 주식을 살 돈이 없습니다");
                     }
@@ -185,6 +187,7 @@ public final class Stock extends JavaPlugin implements Listener {
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
                         econ.withdrawPlayer(e.getWhoClicked().getName(), Double.valueOf(p1.minecraft));
+                        e.getWhoClicked().closeInventory();
                     }else{
                         e.getWhoClicked().sendMessage("마인크래프트(모장) 주식을 살 돈이 없습니다");
                     }
@@ -194,20 +197,26 @@ public final class Stock extends JavaPlugin implements Listener {
                 NamespacedKey key = new NamespacedKey(this, "thdisstudio");
                 NamespacedKey keys = new NamespacedKey(this, "yalmefarm");
                 NamespacedKey keyss = new NamespacedKey(this, "minecraft");
-                if(e.getWhoClicked().getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == null){
+                if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == null){
                     e.getWhoClicked().sendMessage("왼쪽 손에 있는 주식을 찾을 수 없습니다");
-                }else if(e.getWhoClicked().getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == null){
+                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == null){
                     e.getWhoClicked().sendMessage("왼쪽 손에 있는 주식을 찾을 수 없습니다");
-                }else if(e.getWhoClicked().getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == null){
+                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == null){
                     e.getWhoClicked().sendMessage("왼쪽 손에 있는 주식을 찾을 수 없습니다");
-                }else if(e.getWhoClicked().getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == 1){
-                    econ.depositPlayer(e.getWhoClicked().getName(),p1.thdisstudio * e.getWhoClicked().getInventory().getItemInOffHand().getAmount());
+                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == 1){
+                    int money = p1.thdisstudio * e.getWhoClicked().getInventory().getItemInMainHand().getAmount();
+                    e.getWhoClicked().sendMessage(money+"돈");
+                    econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
                     e.getWhoClicked().sendMessage("성공적으로 판매하였습니다!");
-                }else if(e.getWhoClicked().getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == 1){
-                    econ.depositPlayer(e.getWhoClicked().getName(),p1.yalmefarm * e.getWhoClicked().getInventory().getItemInOffHand().getAmount());
+                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == 1){
+                    int money = p1.yalmefarm * e.getWhoClicked().getInventory().getItemInMainHand().getAmount();
+                    e.getWhoClicked().sendMessage(money+"돈");
+                    econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
                     e.getWhoClicked().sendMessage("성공적으로 판매하였습니다!");
-                }else if(e.getWhoClicked().getInventory().getItemInOffHand().getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == 1){
-                    econ.depositPlayer(e.getWhoClicked().getName(),p1.minecraft * e.getWhoClicked().getInventory().getItemInOffHand().getAmount());
+                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == 1){
+                    int money = p1.minecraft * e.getWhoClicked().getInventory().getItemInMainHand().getAmount();
+                    e.getWhoClicked().sendMessage(money+"돈");
+                    econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
                     e.getWhoClicked().sendMessage("성공적으로 판매하였습니다!");
                 }
                 e.setCancelled(true);
