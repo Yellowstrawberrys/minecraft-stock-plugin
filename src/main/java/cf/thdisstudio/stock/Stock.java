@@ -1,9 +1,11 @@
 package cf.thdisstudio.stock;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,18 +16,27 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public final class Stock extends JavaPlugin implements Listener {
+    private static final Logger log = Logger.getLogger("Minecraft");
     stk p1 = new stk();
 
     Inventory inv = Bukkit.createInventory(null, 45, "주식 (5분마다 가격 변동)");
     private static Economy econ = null;
     @Override
     public void onEnable() {
+        if (!setupEconomy()) {
+            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         // Plugin startup logic
         p1.setPriority(Thread.MIN_PRIORITY);
         p1.start();
@@ -35,6 +46,18 @@ public final class Stock extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     @Override
@@ -108,7 +131,7 @@ public final class Stock extends JavaPlugin implements Listener {
             if(e.getClick().isLeftClick()){
                 e.setCancelled(true);
                 if(e.getSlot() == 10){
-                    e.getWhoClicked().sendMessage(String.valueOf(p1.thdisstudio));
+//                    e.getWhoClicked().sendMessage(String.valueOf(p1.thdisstudio));
                     if(econ.has(e.getWhoClicked().getName(),Double.valueOf(p1.thdisstudio))){
                         LocalDateTime myDateObj = LocalDateTime.now();
                         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분ss초");
@@ -117,11 +140,12 @@ public final class Stock extends JavaPlugin implements Listener {
                         ItemMeta stkm = stk.getItemMeta();
                         NamespacedKey key = new NamespacedKey(this, "thdisstudio");
                         stkm.setDisplayName("스디스 스튜디오 주식");
-                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.thdisstudio),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.myFormatObj.toString()));
+                        stkm.setLore(Arrays.asList("구입한 가격: " + String.valueOf(p1.thdisstudio)));
+//                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.thdisstudio),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.myFormatObj.toString()));
                         stkm.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
-                        econ.withdrawPlayer(e.getWhoClicked().getName(), Double.valueOf(p1.thdisstudio));
+                        econ.withdrawPlayer(e.getWhoClicked().getName(), p1.thdisstudio);
                     }else{
                         e.getWhoClicked().sendMessage("스디스 스튜디오 주식을 살 돈이 없습니다");
                     }
@@ -134,7 +158,8 @@ public final class Stock extends JavaPlugin implements Listener {
                         String formattedDate = myDateObj.format(myFormatObj);
                         NamespacedKey key = new NamespacedKey(this, "yalmefarm");
                         stkm.setDisplayName("열매 농장 주식");
-                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.yalmefarm),"구입한 날짜:", formattedDate, "마지막 가격변동 날짜:", p1.myFormatObj.toString()));
+                        stkm.setLore(Arrays.asList("구입한 가격: " + String.valueOf(p1.yalmefarm)));
+//                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.yalmefarm),"구입한 날짜:", formattedDate, "마지막 가격변동 날짜:", p1.myFormatObj.toString()));
                         stkm.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
@@ -151,7 +176,8 @@ public final class Stock extends JavaPlugin implements Listener {
                         String formattedDate = myDateObj.format(myFormatObj);
                         NamespacedKey key = new NamespacedKey(this, "minecraft");
                         stkm.setDisplayName("마인크래프트(모장) 주식");
-                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.minecraft),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.myFormatObj.toString()));
+                        stkm.setLore(Arrays.asList("구입한 가격: " + String.valueOf(p1.minecraft)));
+//                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.minecraft),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.myFormatObj.toString()));
                         stkm.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
@@ -162,6 +188,8 @@ public final class Stock extends JavaPlugin implements Listener {
                 }
                 e.setCancelled(true);
             }else if(e.isRightClick()){
+                e.getWhoClicked().sendMessage("노딸바보");
+
                 NamespacedKey key = new NamespacedKey(this, "thdisstudio");
                 NamespacedKey keys = new NamespacedKey(this, "yalmefarm");
                 NamespacedKey keyss = new NamespacedKey(this, "minecraft");
