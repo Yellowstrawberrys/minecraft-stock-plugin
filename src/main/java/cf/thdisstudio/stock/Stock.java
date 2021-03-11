@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -65,34 +66,38 @@ public final class Stock extends JavaPlugin implements Listener {
         Player p = (Player) sender;
         if(cmd.getName().equalsIgnoreCase("stock")){
 
-
+            ItemStack iskg = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+            ItemMeta iskgm = iskg.getItemMeta();
+            NamespacedKey nkey = new NamespacedKey(this, "iskg");
+            iskgm.getPersistentDataContainer().set(nkey, PersistentDataType.INTEGER, 1);
+            iskg.setItemMeta(iskgm);
             /*태두리 부분*/
-            inv.setItem(0, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(1, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(2, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(3, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(4, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(5, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(6, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(7, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(8, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+            inv.setItem(0, iskg);
+            inv.setItem(1, iskg);
+            inv.setItem(2, iskg);
+            inv.setItem(3, iskg);
+            inv.setItem(4, iskg);
+            inv.setItem(5, iskg);
+            inv.setItem(6, iskg);
+            inv.setItem(7, iskg);
+            inv.setItem(8, iskg);
 
-            inv.setItem(9, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(18, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(27, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(36, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(17, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(26, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(35, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(44, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+            inv.setItem(9, iskg);
+            inv.setItem(18, iskg);
+            inv.setItem(27, iskg);
+            inv.setItem(36, iskg);
+            inv.setItem(17, iskg);
+            inv.setItem(26, iskg);
+            inv.setItem(35, iskg);
+            inv.setItem(44, iskg);
 
-            inv.setItem(37, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(38, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(39, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(40, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(41, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(42, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
-            inv.setItem(43, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+            inv.setItem(37, iskg);
+            inv.setItem(38, iskg);
+            inv.setItem(39, iskg);
+            inv.setItem(40, iskg);
+            inv.setItem(41, iskg);
+            inv.setItem(42, iskg);
+            inv.setItem(43, iskg);
 
 
             /*스디스 스튜디오 주식*/
@@ -123,7 +128,19 @@ public final class Stock extends JavaPlugin implements Listener {
 
         return false;
     }
-
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e){
+        NamespacedKey nkey = new NamespacedKey(this, "iskg");
+        int key = e.getItemDrop().getPersistentDataContainer().get(nkey, PersistentDataType.INTEGER);
+        if(key == 1){
+            Player p = e.getPlayer();
+            ItemStack item = e.getItemDrop().getItemStack().clone();
+            e.getItemDrop().remove();
+            p.getInventory().addItem(item);
+        }else {
+            return;
+        }
+    }
 
     @EventHandler
     public void event(InventoryClickEvent e){
@@ -197,27 +214,25 @@ public final class Stock extends JavaPlugin implements Listener {
                 NamespacedKey key = new NamespacedKey(this, "thdisstudio");
                 NamespacedKey keys = new NamespacedKey(this, "yalmefarm");
                 NamespacedKey keyss = new NamespacedKey(this, "minecraft");
-                if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == null){
-                    e.getWhoClicked().sendMessage("왼쪽 손에 있는 주식을 찾을 수 없습니다");
-                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == null){
-                    e.getWhoClicked().sendMessage("왼쪽 손에 있는 주식을 찾을 수 없습니다");
-                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == null){
-                    e.getWhoClicked().sendMessage("왼쪽 손에 있는 주식을 찾을 수 없습니다");
-                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == 1){
-                    int money = p1.thdisstudio * e.getWhoClicked().getInventory().getItemInMainHand().getAmount();
-                    e.getWhoClicked().sendMessage(money+"돈");
-                    econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                    e.getWhoClicked().sendMessage("성공적으로 판매하였습니다!");
-                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == 1){
-                    int money = p1.yalmefarm * e.getWhoClicked().getInventory().getItemInMainHand().getAmount();
-                    e.getWhoClicked().sendMessage(money+"돈");
-                    econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                    e.getWhoClicked().sendMessage("성공적으로 판매하였습니다!");
-                }else if(e.getWhoClicked().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == 1){
-                    int money = p1.minecraft * e.getWhoClicked().getInventory().getItemInMainHand().getAmount();
-                    e.getWhoClicked().sendMessage(money+"돈");
-                    econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                    e.getWhoClicked().sendMessage("성공적으로 판매하였습니다!");
+                for(int i=0; i>36;i++){
+                    ItemStack itemStack = e.getWhoClicked().getInventory().getItem(i);
+                    ItemStack stk = new ItemStack(Material.PAPER);
+                    if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == 1)){
+                        int money = p1.thdisstudio * e.getWhoClicked().getInventory().getItem(i).getAmount();
+                        e.getWhoClicked().sendMessage(money+"돈");
+                        econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
+                        e.getWhoClicked().sendMessage("판매가 완료되었습니다");
+                    }else if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == 1)){
+                        int money = p1.yalmefarm * e.getWhoClicked().getInventory().getItem(i).getAmount();
+                        e.getWhoClicked().sendMessage(money+"돈");
+                        econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
+                        e.getWhoClicked().sendMessage("판매가 완료되었습니다");
+                    }else if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == 1)){
+                        int money = p1.minecraft * e.getWhoClicked().getInventory().getItem(i).getAmount();
+                        e.getWhoClicked().sendMessage(money+"돈");
+                        econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
+                        e.getWhoClicked().sendMessage("판매가 완료되었습니다");
+                    }
                 }
                 e.setCancelled(true);
             }
