@@ -72,32 +72,42 @@ public final class Stock extends JavaPlugin implements Listener {
             iskgm.getPersistentDataContainer().set(nkey, PersistentDataType.INTEGER, 1);
             iskg.setItemMeta(iskgm);
             /*태두리 부분*/
-            inv.setItem(0, iskg);
-            inv.setItem(1, iskg);
-            inv.setItem(2, iskg);
-            inv.setItem(3, iskg);
-            inv.setItem(4, iskg);
-            inv.setItem(5, iskg);
-            inv.setItem(6, iskg);
-            inv.setItem(7, iskg);
-            inv.setItem(8, iskg);
+            for (int i = 0; i < 9; ++i)
+                inv.setItem(i, iskg);
+//            inv.setItem(0, iskg);
+//            inv.setItem(1, iskg);
+//            inv.setItem(2, iskg);
+//            inv.setItem(3, iskg);
+//            inv.setItem(4, iskg);
+//            inv.setItem(5, iskg);
+//            inv.setItem(6, iskg);
+//            inv.setItem(7, iskg);
+//            inv.setItem(8, iskg);
 
-            inv.setItem(9, iskg);
-            inv.setItem(18, iskg);
-            inv.setItem(27, iskg);
-            inv.setItem(36, iskg);
-            inv.setItem(17, iskg);
-            inv.setItem(26, iskg);
-            inv.setItem(35, iskg);
-            inv.setItem(44, iskg);
+            for (int i = 1; i < 5; ++i) {
+                inv.setItem(i * 9, iskg);
+                inv.setItem(i * 9 + 8, iskg);
+            }
 
-            inv.setItem(37, iskg);
-            inv.setItem(38, iskg);
-            inv.setItem(39, iskg);
-            inv.setItem(40, iskg);
-            inv.setItem(41, iskg);
-            inv.setItem(42, iskg);
-            inv.setItem(43, iskg);
+//            inv.setItem(9, iskg);
+//            inv.setItem(18, iskg);
+//            inv.setItem(27, iskg);
+//            inv.setItem(36, iskg);
+//            inv.setItem(17, iskg);
+//            inv.setItem(26, iskg);
+//            inv.setItem(35, iskg);
+//            inv.setItem(44, iskg);
+
+            for (int i = 37; i < 44; ++i)
+                inv.setItem(i, iskg);
+
+//            inv.setItem(37, iskg);
+//            inv.setItem(38, iskg);
+//            inv.setItem(39, iskg);
+//            inv.setItem(40, iskg);
+//            inv.setItem(41, iskg);
+//            inv.setItem(42, iskg);
+//            inv.setItem(43, iskg);
 
 
             /*스디스 스튜디오 주식*/
