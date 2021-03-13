@@ -221,7 +221,7 @@ public final class Stock extends JavaPlugin implements Listener {
                         int money = p1.thdisstudio * e.getWhoClicked().getInventory().getItem(i).getAmount();
                         e.getWhoClicked().sendMessage(money+"돈");
                         econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                        e.getWhoClicked().sendMessage("판매가 완료되었습니다");
+                        e.getWhoClicked().sendMessage("판매가 w완료되었습니다");
                     }else if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == 1)){
                         int money = p1.yalmefarm * e.getWhoClicked().getInventory().getItem(i).getAmount();
                         e.getWhoClicked().sendMessage(money+"돈");
