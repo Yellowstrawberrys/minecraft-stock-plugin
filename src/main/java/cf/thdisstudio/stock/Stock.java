@@ -211,32 +211,29 @@ public final class Stock extends JavaPlugin implements Listener {
                 }
                 e.setCancelled(true);
             }else if(e.isRightClick()){
-                NamespacedKey key = new NamespacedKey(this, "thdisstudio");
-                NamespacedKey keys = new NamespacedKey(this, "yalmefarm");
-                NamespacedKey keyss = new NamespacedKey(this, "minecraft");
-                for(int i=0; i>36;i++){
-                    ItemStack itemStack = e.getWhoClicked().getInventory().getItem(i);
-                    ItemStack stk = new ItemStack(Material.PAPER);
-                    if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == 1)){
-                        int money = p1.thdisstudio * e.getWhoClicked().getInventory().getItem(i).getAmount();
-                        e.getWhoClicked().sendMessage(money+"돈");
-                        econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                        e.getWhoClicked().sendMessage("판매가 w완료되었습니다");
-                    }else if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER) == 1)){
-                        int money = p1.yalmefarm * e.getWhoClicked().getInventory().getItem(i).getAmount();
-                        e.getWhoClicked().sendMessage(money+"돈");
-                        econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                        e.getWhoClicked().sendMessage("판매가 완료되었습니다");
-                    }else if(itemStack.equals(stk.getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER) == 1)){
-                        int money = p1.minecraft * e.getWhoClicked().getInventory().getItem(i).getAmount();
-                        e.getWhoClicked().sendMessage(money+"돈");
-                        econ.depositPlayer(e.getWhoClicked().getName(),Double.valueOf(money));
-                        e.getWhoClicked().sendMessage("판매가 완료되었습니다");
-                    }
-                }
+
+
                 e.setCancelled(true);
             }
             e.setCancelled(true);
+        }else if(e.getClickedInventory().equals(e.getWhoClicked().getInventory())){
+            NamespacedKey key = new NamespacedKey(this, "thdisstudio");
+            NamespacedKey keys = new NamespacedKey(this, "yalmefarm");
+            NamespacedKey keyss = new NamespacedKey(this, "minecraft");
+            int slot = e.getRawSlot();
+            if(new ItemStack(Material.PAPER).getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER).equals(1)){
+                Double m = Double.valueOf(p1.thdisstudio * e.getClickedInventory().getItem(slot).getAmount());
+                econ.depositPlayer(e.getWhoClicked().getName(), m);
+                e.getWhoClicked().sendMessage("판매가 완료되었습니다! (스디스 스튜디오 주식 "+e.getClickedInventory().getItem(slot).getAmount()+"주)");
+            }else if(new ItemStack(Material.PAPER).getItemMeta().getPersistentDataContainer().get(keys, PersistentDataType.INTEGER).equals(1)){
+                Double m = Double.valueOf(p1.yalmefarm * e.getClickedInventory().getItem(slot).getAmount());
+                econ.depositPlayer(e.getWhoClicked().getName(), m);
+                e.getWhoClicked().sendMessage("판매가 완료되었습니다! (열매농장 주식 "+e.getClickedInventory().getItem(slot).getAmount()+"주)");
+            }else if(new ItemStack(Material.PAPER).getItemMeta().getPersistentDataContainer().get(keyss, PersistentDataType.INTEGER).equals(1)){
+                Double m = Double.valueOf(p1.minecraft * e.getClickedInventory().getItem(slot).getAmount());
+                econ.depositPlayer(e.getWhoClicked().getName(), m);
+                e.getWhoClicked().sendMessage("판매가 완료되었습니다! (마인크래프트 주식 "+e.getClickedInventory().getItem(slot).getAmount()+"주)");
+            }
         }else{
             return;
         }

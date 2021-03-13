@@ -33,7 +33,7 @@ public class stk extends Thread{
                     yalmefarm -= ran.nextInt(100);
                 }
                 LocalDateTime myDateObj = LocalDateTime.now();
-                myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분ss초애 변경됨");
+                myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분ss초에 변경됨");
                 formattedDate = myDateObj.format(myFormatObj);
                 Thread.sleep(300000);
             }
