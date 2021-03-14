@@ -15,19 +15,19 @@ public class stk extends Thread{
             while (true) {
                 Random ran = new Random();
                 /*스디스 스튜디오*/
-                if(ran.nextInt(2)==1 || thdisstudio < 100) {
+                if(ran.nextInt(3)==1 || thdisstudio < 100) {
                     thdisstudio += ran.nextInt(100);
                 }else {
                     thdisstudio -= ran.nextInt(100);
                 }
                 /*마인크래프트*/
-                if(ran.nextInt(2)==1 || thdisstudio < 100) {
+                if(ran.nextInt(3)==1 || thdisstudio < 100) {
                     minecraft += ran.nextInt(100);
                 }else {
                     minecraft -= ran.nextInt(100);
                 }
                 /*열매 농장*/
-                if(ran.nextInt(2)==1 || thdisstudio < 100) {
+                if(ran.nextInt(3)==1 || thdisstudio < 100) {
                     yalmefarm += ran.nextInt(100);
                 }else {
                     yalmefarm -= ran.nextInt(100);
