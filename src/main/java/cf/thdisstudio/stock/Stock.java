@@ -1,6 +1,5 @@
 package cf.thdisstudio.stock;
 
-import com.sun.tools.javac.jvm.Items;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
