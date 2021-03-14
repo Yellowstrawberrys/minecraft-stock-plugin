@@ -1,5 +1,6 @@
 package cf.thdisstudio.stock;
 
+import com.sun.tools.javac.jvm.Items;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -22,6 +23,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public final class Stock extends JavaPlugin implements Listener {
@@ -72,32 +76,42 @@ public final class Stock extends JavaPlugin implements Listener {
             iskgm.getPersistentDataContainer().set(nkey, PersistentDataType.INTEGER, 1);
             iskg.setItemMeta(iskgm);
             /*태두리 부분*/
-            inv.setItem(0, iskg);
-            inv.setItem(1, iskg);
-            inv.setItem(2, iskg);
-            inv.setItem(3, iskg);
-            inv.setItem(4, iskg);
-            inv.setItem(5, iskg);
-            inv.setItem(6, iskg);
-            inv.setItem(7, iskg);
-            inv.setItem(8, iskg);
+            for (int i = 0; i < 9; ++i)
+                inv.setItem(i, iskg);
+//            inv.setItem(0, iskg);
+//            inv.setItem(1, iskg);
+//            inv.setItem(2, iskg);
+//            inv.setItem(3, iskg);
+//            inv.setItem(4, iskg);
+//            inv.setItem(5, iskg);
+//            inv.setItem(6, iskg);
+//            inv.setItem(7, iskg);
+//            inv.setItem(8, iskg);
 
-            inv.setItem(9, iskg);
-            inv.setItem(18, iskg);
-            inv.setItem(27, iskg);
-            inv.setItem(36, iskg);
-            inv.setItem(17, iskg);
-            inv.setItem(26, iskg);
-            inv.setItem(35, iskg);
-            inv.setItem(44, iskg);
+            for (int i = 1; i < 5; ++i) {
+                inv.setItem(i * 9, iskg);
+                inv.setItem(i * 9 + 8, iskg);
+            }
 
-            inv.setItem(37, iskg);
-            inv.setItem(38, iskg);
-            inv.setItem(39, iskg);
-            inv.setItem(40, iskg);
-            inv.setItem(41, iskg);
-            inv.setItem(42, iskg);
-            inv.setItem(43, iskg);
+//            inv.setItem(9, iskg);
+//            inv.setItem(18, iskg);
+//            inv.setItem(27, iskg);
+//            inv.setItem(36, iskg);
+//            inv.setItem(17, iskg);
+//            inv.setItem(26, iskg);
+//            inv.setItem(35, iskg);
+//            inv.setItem(44, iskg);
+
+            for (int i = 37; i < 44; ++i)
+                inv.setItem(i, iskg);
+
+//            inv.setItem(37, iskg);
+//            inv.setItem(38, iskg);
+//            inv.setItem(39, iskg);
+//            inv.setItem(40, iskg);
+//            inv.setItem(41, iskg);
+//            inv.setItem(42, iskg);
+//            inv.setItem(43, iskg);
 
 
             /*스디스 스튜디오 주식*/
@@ -151,7 +165,7 @@ public final class Stock extends JavaPlugin implements Listener {
 //                    e.getWhoClicked().sendMessage(String.valueOf(p1.thdisstudio));
                     if(econ.has(e.getWhoClicked().getName(),Double.valueOf(p1.thdisstudio))){
                         LocalDateTime myDateObj = LocalDateTime.now();
-                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분ss초");
+                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분");
                         String formattedDate = myDateObj.format(myFormatObj);
                         ItemStack stk = new ItemStack(Material.PAPER);
                         ItemMeta stkm = stk.getItemMeta();
@@ -165,14 +179,14 @@ public final class Stock extends JavaPlugin implements Listener {
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
                         econ.withdrawPlayer(e.getWhoClicked().getName(), p1.thdisstudio);
-                        e.getWhoClicked().closeInventory();
+//                        e.getWhoClicked().closeInventory();
                     }else{
                         e.getWhoClicked().sendMessage("스디스 스튜디오 주식을 살 돈이 없습니다");
                     }
                 }else if(e.getSlot() == 11){
                     if(econ.has(e.getWhoClicked().getName(),Double.valueOf(p1.yalmefarm))){
                         LocalDateTime myDateObj = LocalDateTime.now();
-                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분ss초");
+                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분");
                         ItemStack stk = new ItemStack(Material.PAPER);
                         ItemMeta stkm = stk.getItemMeta();
                         String formattedDate = myDateObj.format(myFormatObj);
@@ -185,14 +199,14 @@ public final class Stock extends JavaPlugin implements Listener {
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
                         econ.withdrawPlayer(e.getWhoClicked().getName(), Double.valueOf(p1.yalmefarm));
-                        e.getWhoClicked().closeInventory();
+//                        e.getWhoClicked().closeInventory();
                     }else{
                         e.getWhoClicked().sendMessage("열매 농장 주식을 살 돈이 없습니다");
                     }
                 }else if(e.getSlot() == 12){
                     if(econ.has(e.getWhoClicked().getName(),Double.valueOf(p1.minecraft))){
                         LocalDateTime myDateObj = LocalDateTime.now();
-                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분ss초");
+                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분");
                         ItemStack stk = new ItemStack(Material.PAPER);
                         ItemMeta stkm = stk.getItemMeta();
                         String formattedDate = myDateObj.format(myFormatObj);
@@ -204,14 +218,37 @@ public final class Stock extends JavaPlugin implements Listener {
                         stk.setItemMeta(stkm);
                         e.getWhoClicked().getInventory().addItem(stk);
                         econ.withdrawPlayer(e.getWhoClicked().getName(), Double.valueOf(p1.minecraft));
-                        e.getWhoClicked().closeInventory();
+//                        e.getWhoClicked().closeInventory();
                     }else{
                         e.getWhoClicked().sendMessage("마인크래프트(모장) 주식을 살 돈이 없습니다");
                     }
                 }
                 e.setCancelled(true);
             }else if(e.isRightClick()){
+                String tag = "";
+                double cost = 0.0;
+                if (e.getSlot() == 10) {
+                    tag = "thdisstudio";
+                    cost = p1.thdisstudio;
+                }
+                else if (e.getSlot() == 11) {
+                    tag = "yalmefarm";
+                    cost = p1.yalmefarm;
+                }
+                else if (e.getSlot() == 12) {
+                    tag = "minecraft";
+                    cost = p1.minecraft;
+                }
 
+                for (int i = 0; i < 36; ++i) {
+                    ItemStack item = e.getWhoClicked().getInventory().getItem(i);
+                    if (item == null) continue;
+                    ItemMeta itemMeta = item.getItemMeta();
+                    if (itemMeta.getPersistentDataContainer().has(new NamespacedKey(this, tag), PersistentDataType.INTEGER)) {
+                        econ.depositPlayer(e.getWhoClicked().getName(), cost * item.getAmount());
+                        item.setAmount(0);
+                    }
+                }
 
                 e.setCancelled(true);
             }
