@@ -116,6 +116,14 @@ public final class Stock extends JavaPlugin implements Listener {
             thdis.setItemMeta(thdism);
             inv.setItem(10, thdis);
 
+            /*트윗머스크(타슬라 주식)*/
+            ItemStack ta = new ItemStack(Material.NETHER_STAR);
+            ItemMeta tam = thdis.getItemMeta();
+            tam.setDisplayName("타슬라(트윗머스크)");
+            tam.setLore(Arrays.asList("가격:", String.valueOf(p1.thdisstudio),"변동 일:", p1.formattedDate, "좌클릭으로 구매, 우클릭으로 판매 하세요!"));
+            ta.setItemMeta(thdism);
+            inv.setItem(13, ta);
+
             /*열매 농장 주식*/
             ItemStack ys = new ItemStack(Material.GOLDEN_CARROT);
             ItemMeta ym = thdis.getItemMeta();
@@ -216,6 +224,25 @@ public final class Stock extends JavaPlugin implements Listener {
                     }else{
                         e.getWhoClicked().sendMessage("마인크래프트(모장) 주식을 살 돈이 없습니다");
                     }
+                }else if(e.getSlot() == 13){
+                    if(econ.has(e.getWhoClicked().getName(),Double.valueOf(p1.minecraft))){
+                        LocalDateTime myDateObj = LocalDateTime.now();
+                        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM월dd일, HH시mm분");
+                        ItemStack stk = new ItemStack(Material.PAPER);
+                        ItemMeta stkm = stk.getItemMeta();
+                        String formattedDate = myDateObj.format(myFormatObj);
+                        NamespacedKey key = new NamespacedKey(this, "tasla");
+                        stkm.setDisplayName("타슬라(트윗머스크) 주식");
+                        stkm.setLore(Arrays.asList("구입한 가격: ",String.valueOf(p1.twit_musk),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.formattedDate));
+//                        stkm.setLore(Arrays.asList("구입한 가격:", String.valueOf(p1.minecraft),"구입한 날짜:", formattedDate,"마지막 가격변동 날짜:", p1.myFormatObj.toString()));
+                        stkm.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
+                        stk.setItemMeta(stkm);
+                        e.getWhoClicked().getInventory().addItem(stk);
+                        econ.withdrawPlayer(e.getWhoClicked().getName(), Double.valueOf(p1.minecraft));
+//                        e.getWhoClicked().closeInventory();
+                    }else{
+                        e.getWhoClicked().sendMessage("타슬라(트윗머스크) 주식을 살 돈이 없습니다");
+                    }
                 }
                 e.setCancelled(true);
             }else if(e.isRightClick()){
@@ -232,6 +259,9 @@ public final class Stock extends JavaPlugin implements Listener {
                 else if (e.getSlot() == 12) {
                     tag = "minecraft";
                     cost = p1.minecraft;
+                }else if(e.getSlot() == 13){
+                    tag = "tasla";
+                    cost = p1.twit_musk;
                 }
 
                 for (int i = 0; i < 36; ++i) {
@@ -251,6 +281,7 @@ public final class Stock extends JavaPlugin implements Listener {
             NamespacedKey key = new NamespacedKey(this, "thdisstudio");
             NamespacedKey keys = new NamespacedKey(this, "yalmefarm");
             NamespacedKey keyss = new NamespacedKey(this, "minecraft");
+            NamespacedKey keysss = new NamespacedKey(this, "tasla");
             int slot = e.getRawSlot();
             if(new ItemStack(Material.PAPER).getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER).equals(1)){
                 Double m = Double.valueOf(p1.thdisstudio * e.getClickedInventory().getItem(slot).getAmount());
@@ -264,6 +295,10 @@ public final class Stock extends JavaPlugin implements Listener {
                 Double m = Double.valueOf(p1.minecraft * e.getClickedInventory().getItem(slot).getAmount());
                 econ.depositPlayer(e.getWhoClicked().getName(), m);
                 e.getWhoClicked().sendMessage("판매가 완료되었습니다! (마인크래프트 주식 "+e.getClickedInventory().getItem(slot).getAmount()+"주)");
+            }else if(new ItemStack(Material.PAPER).getItemMeta().getPersistentDataContainer().get(keysss, PersistentDataType.INTEGER).equals(1)){
+                Double m = Double.valueOf(p1.twit_musk * e.getClickedInventory().getItem(slot).getAmount());
+                econ.depositPlayer(e.getWhoClicked().getName(), m);
+                e.getWhoClicked().sendMessage("판매가 완료되었습니다! (타슬라(트윗머스크) 주식 "+e.getClickedInventory().getItem(slot).getAmount()+"주)");
             }
         }else{
             return;
