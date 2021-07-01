@@ -111,7 +111,7 @@ public final class Stock extends JavaPlugin implements Listener {
             /*스디스 스튜디오 주식*/
             ItemStack thdis = new ItemStack(Material.NETHER_STAR);
             ItemMeta thdism = thdis.getItemMeta();
-            thdism.setDisplayName("스디스 스튜디오(서버 개발사)");
+            thdism.setDisplayName("스디스 스튜디오");
             thdism.setLore(Arrays.asList("가격:", String.valueOf(p1.thdisstudio),"변동 일:", p1.formattedDate, "좌클릭으로 구매, 우클릭으로 판매 하세요!"));
             thdis.setItemMeta(thdism);
             inv.setItem(10, thdis);
@@ -124,7 +124,7 @@ public final class Stock extends JavaPlugin implements Listener {
             ys.setItemMeta(ym);
             inv.setItem(11, ys);
 
-            /*스디스 스튜디오 주식*/
+            /*마인크래프트*/
             ItemStack mines = new ItemStack(Material.GRASS_BLOCK);
             ItemMeta minem = thdis.getItemMeta();
             minem.setDisplayName("마인크래프트(모장)");
